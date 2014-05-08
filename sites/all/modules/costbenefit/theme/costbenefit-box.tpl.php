@@ -1,24 +1,20 @@
-<?php
-/*
-@todo: Add total counts.  Also breakdown by short term long term.
-*/
-?>
 <div>
   <table class="table table-striped table-bordered">
     <thead>
       <tr>
       <th colspan="2">
-        <?php print _costbenefit_get_box_type($vars['box']) ?>
+        <?php print _costbenefit_get_box_label($vars['box'], TRUE, 'Procrastination') ?>
         <span class="badge"><?php print count($vars['items']); ?></span>
-        <button class="btn btn-tertiary pull-right" data-toggle="modal" data-target=".add-item-modal-<?php print $vars['box']; ?>">+</button>
+        <button class="btn btn-tertiary pull-right" data-toggle="modal" data-target=".add-item-modal-<?php print $vars['box']; ?>">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
       </tr>
     </thead>
     <tbody>
     <?php foreach ($vars['items'] as $item): ?>
       <tr>
         <td>
-          <a data-toggle="modal" data-target=".edit-item-modal-<?php print $item->cb_item_id; ?>"><?php print $item->title; ?></a>
-          <?php //print l($item->title, 'cb/' . $vars['cb_id'] . '/' . $item->cb_item_id); ?>
+          <a class="edit-cb_item-link" data-toggle="modal" data-target=".edit-item-modal-<?php print $item->cb_item_id; ?>"><?php print $item->title; ?></a>
 
   <!-- Edit item modal -->
   <div class="modal fade edit-item-modal-<?php print $item->cb_item_id; ?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

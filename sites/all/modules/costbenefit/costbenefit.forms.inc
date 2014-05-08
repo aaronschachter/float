@@ -24,11 +24,7 @@ function costbenefit_form($form, &$form_state, $entity = NULL) {
     '#required' => TRUE,
     '#default_value' => isset($entity->title) ? $entity->title : NULL,
   );
-  // Provide a submit button.
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => $label,
-  );
+  $form['submit'] = _get_costbenefit_form_submit_element('Update');
   return $form;
 }
 
@@ -108,8 +104,6 @@ function costbenefit_item_add_form_submit($form, &$form_state) {
  *   The cost-benefit entity the cb-item belongs to.
  */
 function costbenefit_item_edit_form($form, &$form_state, $item) {
-  // Hack the system, since we can't access box label from URL as title callback.
-  drupal_set_title(_costbenefit_get_box_label($item->box));
   $form['cb_item_id'] = array(
     '#type' => 'hidden',
     // And this has to be default_value, not value to get the mutiple forms working.
@@ -118,7 +112,7 @@ function costbenefit_item_edit_form($form, &$form_state, $item) {
     //'#access' => FALSE,
   );
   $form['title'] = array(
-    '#title' => 'A ' . _costbenefit_get_box_label($item->box, FALSE) . ' is:',
+    '#title' => 'A ' . _costbenefit_get_box_label($item->box, FALSE, drupal_get_title()) . ' is:',
     '#type' => 'textfield',
     '#required' => TRUE,
     '#default_value' => $item->title,
@@ -129,13 +123,10 @@ function costbenefit_item_edit_form($form, &$form_state, $item) {
     '#options' => _costbenefit_get_type_options(),
     '#default_value' => $item->type,
   );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => 'Update Item',
-  );
-  $form['footer'] = array(
-    '#markup' => l('Delete this item', 'cb/' . $item->cb_id . '/' . $item->cb_item_id . '/delete'),
-  );
+  $form['submit'] = _get_costbenefit_form_submit_element('Update');
+  // $form['footer'] = array(
+  //   '#markup' => l('Delete this item', 'cb/' . $item->cb_id . '/' . $item->cb_item_id . '/delete'),
+  // );
   return $form;
 }
 
@@ -204,7 +195,7 @@ function _get_costbenefit_form_submit_element($label) {
   return array(
     '#type' => 'submit',
     '#value' => $label,
-    '#prefix' => '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button>',
+    '#prefix' => '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>',
     '#suffix' => '</div>'
   );
 }
